@@ -1,0 +1,37 @@
+<?xml version='1.0' encoding="UTF-8"?>
+
+<ruleset name="Vega PHPMD rule set" xmlns="http://pmd.sf.net/ruleset/1.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://pmd.sf.net/ruleset/1.0.0 http://pmd.sf.net/ruleset_xml_schema.xsd"
+         xsi:noNamespaceSchemaLocation="http://pmd.sf.net/ruleset_xml_schema.xsd">
+    <description>Vega Code Check Rules</description>
+
+    <!-- Clean Code Rules -->
+    <rule ref="rulesets/cleancode.xml">
+        <!-- Allow the use of facades for now -->
+        <exclude name="StaticAccess" />
+    </rule>
+
+    <!-- Code Size Rules -->
+    <rule ref="rulesets/codesize.xml" />
+
+    <!-- Code design rules -->
+    <rule ref="rulesets/design.xml" />
+
+    <!-- Naming Rules -->
+    <rule ref="rulesets/naming.xml">
+        <exclude name="ShortMethodName" />
+    </rule>
+
+    <!-- Allow for Migration::up() -->
+    <rule ref="rulesets/naming.xml/ShortMethodName">
+        <properties>
+            <property name="exceptions">
+                <value>up</value>
+            </property>
+        </properties>
+    </rule>
+
+    <!-- Unused code rules -->
+    <rule ref="rulesets/unusedcode.xml" />
+</ruleset>
