@@ -1,9 +1,14 @@
 ---
 site: ''
-app_key: ''
-app_token: ''
-base_uri: 'https://{{site}}.vtexcommercestable.com.br'
-# mode: "feed" para usar el news feed - "pagination" (o cualquier otro valor) para usar paginación
-orders_mode: 'pagination'
-entities:
 
+base_uri: ''
+
+headers: ''
+
+key: ''
+
+account_data: ''
+
+functions: ''
+
+entities: ''

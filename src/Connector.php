@@ -36,17 +36,18 @@ abstract class Connector extends Rest
                 'site' => $this->config['site']
             ]
         );
+
         $this->setBaseUri($this->config['base_uri']);
-        $this->addHeader('Content-Type', 'application/json');
-        $this->auth($this->config['app_key'], $this->config['app_token']);
+        $this->addHeaders($this->config['headers']);
         parent::setup();
         $this->currentEntity = $this->getEntity($this->getConnectorEntity());
     }
 
-    protected function auth($appKey, $appToken)
+    protected function addHeaders($headers)
     {
-        $this->addHeader('X-VTEX-API-AppKey', $appKey);
-        $this->addHeader('X-VTEX-API-AppToken', $appToken);
+        foreach($headers as $key => $header) {
+            $this->addHeader($key, $header);
+        }
     }
 
     /**
@@ -76,4 +77,36 @@ abstract class Connector extends Rest
             $message
         );
     }
+
+    /**
+     * @SuppressWarnings(PHPMD.BooleanArgumentFlag)
+     * @param $entityPath
+     * @param $data
+     * @param bool $rawResponse
+     * @return mixed
+     * @throws ConnectorException
+     */
+    protected function callEntity($entityPath, $data = [], $rawResponse = false)
+    {
+        $entity = $this->getEntity($entityPath);
+
+        if (!empty($data)) {
+            Data::replace($entity->url, $data);
+            $this->beforeCallEntity($entity, $data);
+        }
+
+        $headers = [];
+        if(property_exists($entity, 'headers')) {
+            $headers = $entity->headers;
+        }
+
+        $this->call($entity->url, $entity->method, $data, $headers, data_get($entity, 'base_uri'));
+
+        if (!$rawResponse) {
+            $this->afterCallEntity($entity);
+        }
+
+        return $this->parsedResponse;
+    }
+
 }
