@@ -48,6 +48,7 @@ class Create extends Connector
             $entityData = array_merge($data, $accountData);
 
             $functions = data_get($this->config, 'functions');
+
             foreach($functions as $function => $attributes) {
                 //Enviar todo el array o un elemento iterativo 
                 $limit = 1;
@@ -77,10 +78,25 @@ class Create extends Connector
                     $entity = $this->callEntity($function, $requestData);
 
                     //Break del llamado
-                    if(($attributes['type'] == 'bool') and isset($attributes['break'])) {
-                        foreach($attributes['break'] as $condition => $value) {
-                            if(isset($entity[$condition]) && ($entity[$condition] == $value)) {
-                                break(2);
+                    if(isset($attributes['break'])) {
+                        for($i=0, $max=count($attributes['break']); $i<$max; ++$i) {
+                            if(isset($entity[$attributes['break'][$i]['param']])) {
+                                $breakExist = false;
+                                switch($attributes['break'][$i]['type']) {
+                                    case 'bool':
+                                        $breakExist = ($entity[$attributes['break'][$i]['param']] == $attributes['break'][$i]['value']);
+                                        break;
+                                    case 'exist':
+                                        $breakExist = isset($entity[$attributes['break'][$i]['param']]);
+                                        break;
+                                    default:
+                                        break;
+                                }
+
+                                if($breakExist) {
+                                    break(3);
+                                }
+
                             }
                         }
                     }
