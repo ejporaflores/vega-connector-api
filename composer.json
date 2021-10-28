@@ -8,9 +8,9 @@
     }
   ],
   "require": {
-    "illuminate/http": "^5.0|^6.0|^7.0|^8.0",
     "php": "^7.1",
-    "vega/connector": "^1.0",
+    "illuminate/http": "^5.0|^6.0|^7.0|^8.0",
+    "vega/connector": "^1.0|^2.0",
     "vega/connector-rest": "^1.0.4",
     "vega/core": "^1.0"
   },
